@@ -39,7 +39,7 @@ export interface Plot {
 
 export type PlacementResult =
   | { success: true;  component: BuildingComponent }
-  | { success: false; error: 'CELL_OCCUPIED' | 'OUT_OF_BOUNDS' | 'INVALID_TYPE' };
+  | { success: false; error: 'CELL_OCCUPIED' | 'OUT_OF_BOUNDS' | 'INVALID_TYPE' | 'CELL_EMPTY' };
 
 export type RemovalResult =
   | { success: true }

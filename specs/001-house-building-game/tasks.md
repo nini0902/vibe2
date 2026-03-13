@@ -28,12 +28,12 @@ Single frontend SPA — all source code lives at repository root:
 
 **Purpose**: Scaffold the Vite + React + TypeScript project and establish the full directory structure before any game code is written.
 
-- [ ] T001 Scaffold Vite + React + TypeScript project: `npm create vite@latest . -- --template react-ts` at repository root
-- [ ] T002 Install runtime dependency: `npm install uuid` (UUID generation for component/design IDs)
-- [ ] T003 [P] Install dev/test dependencies: `npm install -D vitest @testing-library/react @testing-library/jest-dom @testing-library/user-event jsdom @types/uuid`
-- [ ] T004 [P] Configure Vite dev server and Vitest (globals, jsdom environment, setupFiles, path aliases) in `vite.config.ts`
-- [ ] T005 [P] Configure TypeScript path aliases (`@game`, `@storage`, `@hooks`, `@utils`) in `tsconfig.json`
-- [ ] T006 Create full project directory skeleton: `src/components/Canvas/`, `src/components/ComponentPanel/`, `src/components/SaveLoadModal/`, `src/components/PreviewMode/`, `src/game/`, `src/storage/`, `src/hooks/`, `src/utils/`, `src/styles/`, `tests/unit/`, `tests/integration/`
+- [X] T001 Scaffold Vite + React + TypeScript project: `npm create vite@latest . -- --template react-ts` at repository root
+- [X] T002 Install runtime dependency: `npm install uuid` (UUID generation for component/design IDs)
+- [X] T003 [P] Install dev/test dependencies: `npm install -D vitest @testing-library/react @testing-library/jest-dom @testing-library/user-event jsdom @types/uuid`
+- [X] T004 [P] Configure Vite dev server and Vitest (globals, jsdom environment, setupFiles, path aliases) in `vite.config.ts`
+- [X] T005 [P] Configure TypeScript path aliases (`@game`, `@storage`, `@hooks`, `@utils`) in `tsconfig.json`
+- [X] T006 Create full project directory skeleton: `src/components/Canvas/`, `src/components/ComponentPanel/`, `src/components/SaveLoadModal/`, `src/components/PreviewMode/`, `src/game/`, `src/storage/`, `src/hooks/`, `src/utils/`, `src/styles/`, `tests/unit/`, `tests/integration/`
 
 **Checkpoint**: `npm run dev` launches a blank Vite + React app; `npm run test:run` runs zero tests without error.
 
@@ -45,15 +45,15 @@ Single frontend SPA — all source code lives at repository root:
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete.
 
-- [ ] T007 Define all TypeScript enums and interfaces (`ComponentType`, `Orientation`, `GridPosition`, `BuildingComponent`, `Plot`, `PlacementResult`, `RemovalResult`) in `src/game/types.ts`
-- [ ] T008 [P] Define game constants (`GRID_WIDTH = 20`, `GRID_HEIGHT = 20`, `COMPONENT_LIST`, `MIN_GRID = 5`, `MAX_GRID = 50`) in `src/game/constants.ts`
-- [ ] T009 [P] Implement pure `PlacementRules` functions (`canPlace`, `canRemove`, `getOccupant`) using spatial-index key `"x,y"` in `src/game/PlacementRules.ts`
-- [ ] T010 Implement `GameState` module (`createPlot`, `placeComponent`, `removeComponent`, `replaceComponent`, `listComponents`, `toKey`) with immutable snapshot returns in `src/game/GameState.ts` (depends on T007, T009)
-- [ ] T011 [P] Implement canvas pixel-to-grid coordinate helpers (`pixelToGrid`, `gridToPixel`) in `src/utils/canvas.ts`
-- [ ] T012 [P] Implement JSON serialisation helpers (`serializeComponents`, `deserializeComponents`) and CRC32 checksum utility in `src/utils/json.ts`
-- [ ] T013 [P] Define `SerializedComponent`, `HouseDesign`, `SaveResult`, `LoadResult`, `DeleteResult`, and `StorageError` types; define `IStorageAdapter` interface in `src/storage/IStorageAdapter.ts`
-- [ ] T014 Implement `useGameState` hook with `useReducer` + `useContext` (actions: `PLACE_COMPONENT`, `REMOVE_COMPONENT`, `REPLACE_COMPONENT`, `LOAD_DESIGN`, `CLEAR_PLOT`, `SET_MODE`, `SELECT_COMPONENT`) in `src/hooks/useGameState.ts` (depends on T007, T010)
-- [ ] T015 Create `App.tsx` root component with `<GameStateProvider>` context provider and top-level layout scaffold (header, canvas area, side panel) in `src/components/App.tsx` (depends on T014)
+- [X] T007 Define all TypeScript enums and interfaces (`ComponentType`, `Orientation`, `GridPosition`, `BuildingComponent`, `Plot`, `PlacementResult`, `RemovalResult`) in `src/game/types.ts`
+- [X] T008 [P] Define game constants (`GRID_WIDTH = 20`, `GRID_HEIGHT = 20`, `COMPONENT_LIST`, `MIN_GRID = 5`, `MAX_GRID = 50`) in `src/game/constants.ts`
+- [X] T009 [P] Implement pure `PlacementRules` functions (`canPlace`, `canRemove`, `getOccupant`) using spatial-index key `"x,y"` in `src/game/PlacementRules.ts`
+- [X] T010 Implement `GameState` module (`createPlot`, `placeComponent`, `removeComponent`, `replaceComponent`, `listComponents`, `toKey`) with immutable snapshot returns in `src/game/GameState.ts` (depends on T007, T009)
+- [X] T011 [P] Implement canvas pixel-to-grid coordinate helpers (`pixelToGrid`, `gridToPixel`) in `src/utils/canvas.ts`
+- [X] T012 [P] Implement JSON serialisation helpers (`serializeComponents`, `deserializeComponents`) and CRC32 checksum utility in `src/utils/json.ts`
+- [X] T013 [P] Define `SerializedComponent`, `HouseDesign`, `SaveResult`, `LoadResult`, `DeleteResult`, and `StorageError` types; define `IStorageAdapter` interface in `src/storage/IStorageAdapter.ts`
+- [X] T014 Implement `useGameState` hook with `useReducer` + `useContext` (actions: `PLACE_COMPONENT`, `REMOVE_COMPONENT`, `REPLACE_COMPONENT`, `LOAD_DESIGN`, `CLEAR_PLOT`, `SET_MODE`, `SELECT_COMPONENT`) in `src/hooks/useGameState.ts` (depends on T007, T010)
+- [X] T015 Create `App.tsx` root component with `<GameStateProvider>` context provider and top-level layout scaffold (header, canvas area, side panel) in `src/components/App.tsx` (depends on T014)
 
 **Checkpoint**: `src/game/GameState.ts` and `src/game/PlacementRules.ts` are independently importable and all exported functions are callable without React. Foundation is ready — user story phases can now proceed.
 
@@ -65,12 +65,12 @@ Single frontend SPA — all source code lives at repository root:
 
 **Independent Test**: Launch `npm run dev`, open the app, select a wall from the panel, click an empty grid cell — the wall appears. Click the same cell again — an error message appears. No save/load or preview functionality is required.
 
-- [ ] T016 [P] [US1] Implement `GridRenderer` pure functions (`renderGrid`, `pixelToGrid`) that draw grid lines and component tiles onto a `CanvasRenderingContext2D` using `RenderOptions` in `src/components/Canvas/GridRenderer.ts`
-- [ ] T017 [US1] Implement `GameCanvas` React component that hosts the `<canvas>` element, listens for mouse clicks and hover, converts pixel coords via `GridRenderer.pixelToGrid`, and dispatches `PLACE_COMPONENT` or `SELECT_COMPONENT` actions via `useGameState` in `src/components/Canvas/GameCanvas.tsx` (depends on T014, T016)
-- [ ] T018 [P] [US1] Implement `ComponentButton` displaying a component type icon/label and highlighting when selected in `src/components/ComponentPanel/ComponentButton.tsx`
-- [ ] T019 [US1] Implement `ComponentPanel` listing all five `ComponentType` values as `<ComponentButton>` items; dispatches `SELECT_COMPONENT` on click in `src/components/ComponentPanel/ComponentPanel.tsx` (depends on T018)
-- [ ] T020 [US1] Implement `useCanvas` hook that holds the canvas `ref`, triggers `renderGrid` redraws whenever `plot` state changes, and exposes `canvasRef` to `GameCanvas` in `src/hooks/useCanvas.ts` (depends on T014, T016)
-- [ ] T021 [US1] Wire `App.tsx` to render `<GameCanvas>` and `<ComponentPanel>` side-by-side, initialise an empty 20×20 plot on first render via `createPlot`, and display a status bar showing `lastActionResult` errors (e.g., "Cell is already occupied") in `src/components/App.tsx` (depends on T015, T017, T019, T020)
+- [X] T016 [P] [US1] Implement `GridRenderer` pure functions (`renderGrid`, `pixelToGrid`) that draw grid lines and component tiles onto a `CanvasRenderingContext2D` using `RenderOptions` in `src/components/Canvas/GridRenderer.ts`
+- [X] T017 [US1] Implement `GameCanvas` React component that hosts the `<canvas>` element, listens for mouse clicks and hover, converts pixel coords via `GridRenderer.pixelToGrid`, and dispatches `PLACE_COMPONENT` or `SELECT_COMPONENT` actions via `useGameState` in `src/components/Canvas/GameCanvas.tsx` (depends on T014, T016)
+- [X] T018 [P] [US1] Implement `ComponentButton` displaying a component type icon/label and highlighting when selected in `src/components/ComponentPanel/ComponentButton.tsx`
+- [X] T019 [US1] Implement `ComponentPanel` listing all five `ComponentType` values as `<ComponentButton>` items; dispatches `SELECT_COMPONENT` on click in `src/components/ComponentPanel/ComponentPanel.tsx` (depends on T018)
+- [X] T020 [US1] Implement `useCanvas` hook that holds the canvas `ref`, triggers `renderGrid` redraws whenever `plot` state changes, and exposes `canvasRef` to `GameCanvas` in `src/hooks/useCanvas.ts` (depends on T014, T016)
+- [X] T021 [US1] Wire `App.tsx` to render `<GameCanvas>` and `<ComponentPanel>` side-by-side, initialise an empty 20×20 plot on first render via `createPlot`, and display a status bar showing `lastActionResult` errors (e.g., "Cell is already occupied") in `src/components/App.tsx` (depends on T015, T017, T019, T020)
 
 **Checkpoint**: User Story 1 is fully functional — a player can open the app, select any component, and place it on the grid. Occupied-cell error message displays correctly. No other stories are required to verify this.
 
@@ -82,10 +82,10 @@ Single frontend SPA — all source code lives at repository root:
 
 **Independent Test**: Place a door, click it to select it, click "Remove" — the cell empties. Place a window, click it, select a wall from the panel — the window is replaced by a wall. Verify via `npm run dev` only; no save/load required.
 
-- [ ] T022 [P] [US2] Extend `useGameState` reducer to track `selectedCell: GridPosition | null` and add `SELECT_CELL` action so clicking an occupied cell selects it (rather than attempting placement) in `src/hooks/useGameState.ts` (depends on T014)
-- [ ] T023 [US2] Update `GameCanvas` click handler to distinguish between "select occupied cell" and "place on empty cell" based on `canRemove` / `canPlace` from `PlacementRules`, and highlight the selected cell on the canvas in `src/components/Canvas/GameCanvas.tsx` (depends on T017, T022)
-- [ ] T024 [P] [US2] Implement `ActionPanel` component that appears when a cell is selected, showing "Remove" button and the `<ComponentPanel>` for replacement in `src/components/ActionPanel/ActionPanel.tsx` (depends on T019)
-- [ ] T025 [US2] Wire `ActionPanel` into `App.tsx`: render it conditionally when `selectedCell` is non-null; dispatch `REMOVE_COMPONENT` on "Remove" click and `REPLACE_COMPONENT` on component-type selection in `src/components/App.tsx` (depends on T021, T024)
+- [X] T022 [P] [US2] Extend `useGameState` reducer to track `selectedCell: GridPosition | null` and add `SELECT_CELL` action so clicking an occupied cell selects it (rather than attempting placement) in `src/hooks/useGameState.ts` (depends on T014)
+- [X] T023 [US2] Update `GameCanvas` click handler to distinguish between "select occupied cell" and "place on empty cell" based on `canRemove` / `canPlace` from `PlacementRules`, and highlight the selected cell on the canvas in `src/components/Canvas/GameCanvas.tsx` (depends on T017, T022)
+- [X] T024 [P] [US2] Implement `ActionPanel` component that appears when a cell is selected, showing "Remove" button and the `<ComponentPanel>` for replacement in `src/components/ActionPanel/ActionPanel.tsx` (depends on T019)
+- [X] T025 [US2] Wire `ActionPanel` into `App.tsx`: render it conditionally when `selectedCell` is non-null; dispatch `REMOVE_COMPONENT` on "Remove" click and `REPLACE_COMPONENT` on component-type selection in `src/components/App.tsx` (depends on T021, T024)
 
 **Checkpoint**: User Stories 1 and 2 both work independently. Players can fully place, select, remove, and replace components before save/load or preview exist.
 
@@ -97,12 +97,12 @@ Single frontend SPA — all source code lives at repository root:
 
 **Independent Test**: Build a partial house, click "Save", provide a name, confirm save toast. Refresh the page (new session), click "Load", select the saved design — all components reappear at the correct positions. Test via `npm run dev` only.
 
-- [ ] T026 [US3] Implement `LocalStorageAdapter` class (methods: `save`, `update`, `load`, `listAll`, `delete`, `deleteAll`) with CRC32 checksum verification, schema version checking, QuotaExceededError handling, and 10-design eviction policy in `src/storage/LocalStorageAdapter.ts` (depends on T012, T013)
-- [ ] T027 [US3] Implement `useSave` hook that instantiates `LocalStorageAdapter`, exposes `saveDesign`, `loadDesign`, `deleteDesign`, `refreshDesigns`, and manages `SaveLoadState` (`designs`, `isSaving`, `isLoading`, `lastError`) in `src/hooks/useSave.ts` (depends on T014, T026)
-- [ ] T028 [P] [US3] Implement `SaveForm` component with a text input for design name and a "Save" submit button in `src/components/SaveLoadModal/SaveForm.tsx`
-- [ ] T029 [P] [US3] Implement `LoadList` component rendering a list of `HouseDesign` items (name, updatedAt, delete button) with "Load" action per item in `src/components/SaveLoadModal/LoadList.tsx`
-- [ ] T030 [US3] Implement `SaveLoadModal` shell that composes `<SaveForm>` and `<LoadList>` inside a modal overlay with open/close state in `src/components/SaveLoadModal/SaveLoadModal.tsx` (depends on T028, T029)
-- [ ] T031 [US3] Wire `SaveLoadModal` and `useSave` into `App.tsx`: add "Save / Load" button to the header, handle `saveDesign` with the current plot, handle `loadDesign` by dispatching `LOAD_DESIGN` action in `src/components/App.tsx` (depends on T025, T027, T030)
+- [X] T026 [US3] Implement `LocalStorageAdapter` class (methods: `save`, `update`, `load`, `listAll`, `delete`, `deleteAll`) with CRC32 checksum verification, schema version checking, QuotaExceededError handling, and 10-design eviction policy in `src/storage/LocalStorageAdapter.ts` (depends on T012, T013)
+- [X] T027 [US3] Implement `useSave` hook that instantiates `LocalStorageAdapter`, exposes `saveDesign`, `loadDesign`, `deleteDesign`, `refreshDesigns`, and manages `SaveLoadState` (`designs`, `isSaving`, `isLoading`, `lastError`) in `src/hooks/useSave.ts` (depends on T014, T026)
+- [X] T028 [P] [US3] Implement `SaveForm` component with a text input for design name and a "Save" submit button in `src/components/SaveLoadModal/SaveForm.tsx`
+- [X] T029 [P] [US3] Implement `LoadList` component rendering a list of `HouseDesign` items (name, updatedAt, delete button) with "Load" action per item in `src/components/SaveLoadModal/LoadList.tsx`
+- [X] T030 [US3] Implement `SaveLoadModal` shell that composes `<SaveForm>` and `<LoadList>` inside a modal overlay with open/close state in `src/components/SaveLoadModal/SaveLoadModal.tsx` (depends on T028, T029)
+- [X] T031 [US3] Wire `SaveLoadModal` and `useSave` into `App.tsx`: add "Save / Load" button to the header, handle `saveDesign` with the current plot, handle `loadDesign` by dispatching `LOAD_DESIGN` action in `src/components/App.tsx` (depends on T025, T027, T030)
 
 **Checkpoint**: User Stories 1, 2, and 3 all work independently. Players can build, edit, save, and reload house designs across browser sessions.
 
@@ -114,9 +114,9 @@ Single frontend SPA — all source code lives at repository root:
 
 **Independent Test**: Build a house structure, click "Preview" — the canvas tilts into an isometric-like view. Drag the mouse to rotate. Click "Exit Preview" to return to the grid editor. Test via `npm run dev`.
 
-- [ ] T032 [P] [US4] Add `SET_MODE` action handler to `useGameState` reducer to toggle `mode` between `'build'` and `'preview'` in `src/hooks/useGameState.ts` (depends on T022)
-- [ ] T033 [US4] Implement `PreviewMode` component that wraps the canvas in a `<div>` with CSS `transform: perspective(800px) rotateX(45deg)`, listens for `mousemove` drag events to update `rotateY`, and exposes an "Exit Preview" button in `src/components/PreviewMode/PreviewMode.tsx` (depends on T016)
-- [ ] T034 [US4] Wire `PreviewMode` into `App.tsx`: add "Preview" button to the header; conditionally render `<PreviewMode>` instead of `<GameCanvas>` when `mode === 'preview'`; dispatch `SET_MODE` actions in `src/components/App.tsx` (depends on T031, T033)
+- [X] T032 [P] [US4] Add `SET_MODE` action handler to `useGameState` reducer to toggle `mode` between `'build'` and `'preview'` in `src/hooks/useGameState.ts` (depends on T022)
+- [X] T033 [US4] Implement `PreviewMode` component that wraps the canvas in a `<div>` with CSS `transform: perspective(800px) rotateX(45deg)`, listens for `mousemove` drag events to update `rotateY`, and exposes an "Exit Preview" button in `src/components/PreviewMode/PreviewMode.tsx` (depends on T016)
+- [X] T034 [US4] Wire `PreviewMode` into `App.tsx`: add "Preview" button to the header; conditionally render `<PreviewMode>` instead of `<GameCanvas>` when `mode === 'preview'`; dispatch `SET_MODE` actions in `src/components/App.tsx` (depends on T031, T033)
 
 **Checkpoint**: All four user stories are independently functional. Players can build, edit, save/load, and preview their house design.
 
@@ -126,11 +126,11 @@ Single frontend SPA — all source code lives at repository root:
 
 **Purpose**: Styling, entry-point wiring, edge-case handling, and final acceptance validation across all user stories.
 
-- [ ] T035 [P] Add CSS module files for all components (`GameCanvas.module.css`, `ComponentPanel.module.css`, `ActionPanel.module.css`, `SaveLoadModal.module.css`, `PreviewMode.module.css`) with base layout and colour theme in `src/styles/`
-- [ ] T036 Wire application entry point: import `<App>` and mount into `#root` in `src/main.tsx`; ensure `index.html` in `public/` references `main.tsx`
-- [ ] T037 [P] Add edge-case handling: display quota-exceeded banner when `LocalStorageAdapter` returns `QUOTA_EXCEEDED`; show corrupted-design warning when `load` returns `CORRUPTED`; prevent saving an empty plot with a clear user message in `src/components/App.tsx`
-- [ ] T038 [P] Add hover highlight to `GridRenderer.renderGrid` so the cell under the cursor is visually distinct from empty and occupied cells in `src/components/Canvas/GridRenderer.ts`
-- [ ] T039 Run the full acceptance scenario checklist from `specs/001-house-building-game/quickstart.md` manually against `npm run dev` and confirm all items pass
+- [X] T035 [P] Add CSS module files for all components (`GameCanvas.module.css`, `ComponentPanel.module.css`, `ActionPanel.module.css`, `SaveLoadModal.module.css`, `PreviewMode.module.css`) with base layout and colour theme in `src/styles/`
+- [X] T036 Wire application entry point: import `<App>` and mount into `#root` in `src/main.tsx`; ensure `index.html` in `public/` references `main.tsx`
+- [X] T037 [P] Add edge-case handling: display quota-exceeded banner when `LocalStorageAdapter` returns `QUOTA_EXCEEDED`; show corrupted-design warning when `load` returns `CORRUPTED`; prevent saving an empty plot with a clear user message in `src/components/App.tsx`
+- [X] T038 [P] Add hover highlight to `GridRenderer.renderGrid` so the cell under the cursor is visually distinct from empty and occupied cells in `src/components/Canvas/GridRenderer.ts`
+- [X] T039 Run the full acceptance scenario checklist from `specs/001-house-building-game/quickstart.md` manually against `npm run dev` and confirm all items pass
 
 ---
 

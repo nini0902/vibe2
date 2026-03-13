@@ -4,7 +4,7 @@ import { LocalStorageAdapter } from '@storage/LocalStorageAdapter.ts'
 import type { SaveResult, LoadResult, DeleteResult, HouseDesign } from '@storage/IStorageAdapter.ts'
 import type { StorageError } from '@storage/IStorageAdapter.ts'
 import { useGameState } from './useGameState.tsx'
-import { serializeComponents, deserializeComponents } from '@utils/json.ts'
+import { serializeComponents } from '@utils/json.ts'
 import { listComponents } from '@game/GameState.ts'
 import type { Plot } from '@game/types.ts'
 
@@ -65,9 +65,6 @@ export function useSave(): SaveLoadState & SaveLoadActions {
     if (!result.success) {
       setLastError(result.error);
     } else {
-      // Deserialize and dispatch
-      const components = deserializeComponents(result.design.components);
-      void components; // used via LOAD_DESIGN
       dispatch({ type: 'LOAD_DESIGN', design: result.design });
     }
     return result;

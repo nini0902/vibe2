@@ -108,7 +108,7 @@ export function replaceComponent(
   if (!occupant) {
     return {
       plot,
-      result: { success: false, error: 'CELL_OCCUPIED' },
+      result: { success: false, error: 'CELL_EMPTY' },
     };
   }
   const newComponents = new Map(plot.components);
