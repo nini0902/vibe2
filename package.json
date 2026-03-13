@@ -1,0 +1,15 @@
+{
+  "name": "better-me-site",
+  "version": "1.0.0",
+  "description": "協助失戀者設定自我成長目標並自動生成改善計畫的純前端網站",
+  "scripts": {
+    "test": "mocha tests/**/*.test.js --timeout 5000"
+  },
+  "devDependencies": {
+    "chai": "^4.3.10",
+    "mocha": "^10.2.0"
+  },
+  "engines": {
+    "node": ">=16"
+  }
+}

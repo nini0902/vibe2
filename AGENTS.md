@@ -5,6 +5,26 @@
 - 使用 CDN 版本 JS 套件，資料儲存於 GUN.js，無後端需求
 - 採用 TDD 流程，所有功能皆以測試驅動開發
 
+## 環境設定（Agent 必讀）
+
+### Bootstrap（初次設定）
+```bash
+node --version  # 需要 Node.js 16+
+npm install     # 安裝所有依賴（Mocha + Chai）
+```
+
+### 執行測試
+```bash
+npm test        # 執行所有單元測試（Mocha）
+```
+
+### 新增功能開發流程（TDD）
+1. 在 `tests/` 目錄新增測試（`*.test.js`）
+2. 執行 `npm test` 確認測試失敗（紅燈）
+3. 在 `src/js/` 實作功能
+4. 執行 `npm test` 確認測試通過（綠燈）
+5. 重構並再次確認測試通過
+
 ## 專案結構
 ```
 /
