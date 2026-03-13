@@ -1,0 +1,88 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  font-family: system-ui, sans-serif;
+  background: #f5f5f5;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background: #2c3e50;
+  color: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.logo {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.headerActions {
+  display: flex;
+  gap: 10px;
+}
+
+.headerBtn {
+  padding: 8px 16px;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 6px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 0.15s;
+}
+
+.headerBtn:hover {
+  background: rgba(255,255,255,0.25);
+}
+
+.activeBtn {
+  background: rgba(100,200,100,0.3);
+  border-color: #6c6;
+}
+
+.statusBar {
+  padding: 8px 20px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.statusError {
+  background: #ffe0e0;
+  color: #c00;
+  border-bottom: 1px solid #f88;
+}
+
+.statusInfo {
+  background: #e0ffe0;
+  color: #060;
+  border-bottom: 1px solid #8f8;
+}
+
+.main {
+  display: flex;
+  flex: 1;
+  overflow: auto;
+  padding: 20px;
+  gap: 20px;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.canvas {
+  flex-shrink: 0;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 160px;
+}

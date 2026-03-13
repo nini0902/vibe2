@@ -1,0 +1,51 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  min-width: 140px;
+}
+
+.title {
+  margin: 0 0 8px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #333;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.componentBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  background: #f9f9f9;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.15s;
+}
+
+.componentBtn:hover {
+  background: #eef;
+  border-color: #99b;
+}
+
+.componentBtn.selected {
+  background: #e0e8ff;
+  border-color: #4466cc;
+  font-weight: 700;
+}
+
+.icon {
+  font-size: 20px;
+}
+
+.label {
+  color: #333;
+}
