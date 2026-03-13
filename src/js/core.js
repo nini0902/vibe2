@@ -4,14 +4,16 @@
  */
 
 class GoalManager {
-  constructor() {
+  constructor(storage) {
     this.storageKey = 'betterme:goals';
+    // 支援注入 storage（測試環境），預設使用瀏覽器 localStorage
+    this.storage = storage || (typeof localStorage !== 'undefined' ? localStorage : null);
   }
 
   // 讀取所有目標
   getAllGoals() {
     try {
-      return JSON.parse(localStorage.getItem(this.storageKey) || '[]');
+      return JSON.parse(this.storage.getItem(this.storageKey) || '[]');
     } catch (e) {
       console.error('讀取目標失敗:', e);
       return [];
@@ -21,7 +23,7 @@ class GoalManager {
   // 保存所有目標
   saveGoals(goals) {
     try {
-      localStorage.setItem(this.storageKey, JSON.stringify(goals));
+      this.storage.setItem(this.storageKey, JSON.stringify(goals));
     } catch (e) {
       console.error('保存目標失敗:', e);
     }
@@ -131,5 +133,9 @@ class GoalManager {
   }
 }
 
-// 全局實例
-window.goalManager = new GoalManager();
+// 全局實例（瀏覽器環境）或模組匯出（Node.js 測試環境）
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = GoalManager;
+} else {
+  window.goalManager = new GoalManager();
+}
