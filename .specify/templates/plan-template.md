@@ -31,7 +31,15 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- [ ] 全部內容以繁體中文撰寫，術語附必要中文說明。
+- [ ] 設計符合 MVP 與可維護原則，未引入非必要抽象。
+- [ ] 未新增非必要 Markdown 變更紀錄或總結文件。
+- [ ] 已定義 Git 檢查點：Spec、Plan、Tasks、Implement 里程碑均執行 `git status`。
+- [ ] 已定義關鍵節點提交策略（至少於規格確認、計畫完成、任務完成、主要實作完成）。
+- [ ] TDD 策略明確：先測試且測試先失敗，再實作與重構。
+- [ ] Implement 階段已規劃 `tasks.md` 即時勾選更新機制。
+- [ ] Implement 階段已規劃規格文件保護策略，避免刪除或覆蓋。
+- [ ] 若為網站專案且無額外要求，已採靜態前端並以 GitHub Pages 為預設部署目標。
 
 ## Project Structure
 

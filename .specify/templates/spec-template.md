@@ -4,6 +4,7 @@
 **Created**: [DATE]  
 **Status**: Draft  
 **Input**: User description: "$ARGUMENTS"
+**語言要求**: 本文件 MUST 使用繁體中文撰寫。
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -80,6 +81,8 @@
 <!--
   ACTION REQUIRED: The content in this section represents placeholders.
   Fill them out with the right functional requirements.
+  Keep requirements MVP-focused and maintainable. Avoid over-engineering.
+  Do not add separate Markdown change-summary files unless explicitly requested.
 -->
 
 ### Functional Requirements

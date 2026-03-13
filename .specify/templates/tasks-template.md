@@ -8,7 +8,7 @@ description: "Task list template for feature implementation"
 **Input**: Design documents from `/specs/[###-feature-name]/`
 **Prerequisites**: plan.md (required), spec.md (required for user stories), research.md, data-model.md, contracts/
 
-**Tests**: The examples below include test tasks. Tests are OPTIONAL - only include them if explicitly requested in the feature specification.
+**Tests**: 測試任務為必要項，必須遵循 TDD（先寫測試、先失敗、再實作）。
 
 **Organization**: Tasks are grouped by user story to enable independent implementation and testing of each story.
 
@@ -51,6 +51,10 @@ description: "Task list template for feature implementation"
 - [ ] T001 Create project structure per implementation plan
 - [ ] T002 Initialize [language] project with [framework] dependencies
 - [ ] T003 [P] Configure linting and formatting tools
+- [ ] T004 Define Git checkpoints and run initial `git status`
+- [ ] T005 Setup test framework and baseline failing tests for the first story
+- [ ] T006 Define safeguards to prevent spec/plan/tasks overwrite during implement
+- [ ] T007 [Conditional] If web project, scaffold static frontend deployment for GitHub Pages
 
 ---
 
@@ -62,12 +66,12 @@ description: "Task list template for feature implementation"
 
 Examples of foundational tasks (adjust based on your project):
 
-- [ ] T004 Setup database schema and migrations framework
-- [ ] T005 [P] Implement authentication/authorization framework
-- [ ] T006 [P] Setup API routing and middleware structure
-- [ ] T007 Create base models/entities that all stories depend on
-- [ ] T008 Configure error handling and logging infrastructure
-- [ ] T009 Setup environment configuration management
+- [ ] T008 Setup database schema and migrations framework
+- [ ] T009 [P] Implement authentication/authorization framework
+- [ ] T010 [P] Setup API routing and middleware structure
+- [ ] T011 Create base models/entities that all stories depend on
+- [ ] T012 Configure error handling and logging infrastructure
+- [ ] T013 Setup environment configuration management
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -79,21 +83,22 @@ Examples of foundational tasks (adjust based on your project):
 
 **Independent Test**: [How to verify this story works on its own]
 
-### Tests for User Story 1 (OPTIONAL - only if tests requested) ⚠️
+### Tests for User Story 1 (REQUIRED - TDD) ⚠️
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T010 [P] [US1] Contract test for [endpoint] in tests/contract/test_[name].py
-- [ ] T011 [P] [US1] Integration test for [user journey] in tests/integration/test_[name].py
+- [ ] T014 [P] [US1] Contract test for [endpoint] in tests/contract/test_[name].py
+- [ ] T015 [P] [US1] Integration test for [user journey] in tests/integration/test_[name].py
 
 ### Implementation for User Story 1
 
-- [ ] T012 [P] [US1] Create [Entity1] model in src/models/[entity1].py
-- [ ] T013 [P] [US1] Create [Entity2] model in src/models/[entity2].py
-- [ ] T014 [US1] Implement [Service] in src/services/[service].py (depends on T012, T013)
-- [ ] T015 [US1] Implement [endpoint/feature] in src/[location]/[file].py
-- [ ] T016 [US1] Add validation and error handling
-- [ ] T017 [US1] Add logging for user story 1 operations
+- [ ] T016 [P] [US1] Create [Entity1] model in src/models/[entity1].py
+- [ ] T017 [P] [US1] Create [Entity2] model in src/models/[entity2].py
+- [ ] T018 [US1] Implement [Service] in src/services/[service].py (depends on T016, T017)
+- [ ] T019 [US1] Implement [endpoint/feature] in src/[location]/[file].py
+- [ ] T020 [US1] Add validation and error handling
+- [ ] T021 [US1] Add logging for user story 1 operations
+- [ ] T022 [US1] Update completed checkboxes in tasks.md and run `git status`
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 
@@ -105,17 +110,18 @@ Examples of foundational tasks (adjust based on your project):
 
 **Independent Test**: [How to verify this story works on its own]
 
-### Tests for User Story 2 (OPTIONAL - only if tests requested) ⚠️
+### Tests for User Story 2 (REQUIRED - TDD) ⚠️
 
-- [ ] T018 [P] [US2] Contract test for [endpoint] in tests/contract/test_[name].py
-- [ ] T019 [P] [US2] Integration test for [user journey] in tests/integration/test_[name].py
+- [ ] T023 [P] [US2] Contract test for [endpoint] in tests/contract/test_[name].py
+- [ ] T024 [P] [US2] Integration test for [user journey] in tests/integration/test_[name].py
 
 ### Implementation for User Story 2
 
-- [ ] T020 [P] [US2] Create [Entity] model in src/models/[entity].py
-- [ ] T021 [US2] Implement [Service] in src/services/[service].py
-- [ ] T022 [US2] Implement [endpoint/feature] in src/[location]/[file].py
-- [ ] T023 [US2] Integrate with User Story 1 components (if needed)
+- [ ] T025 [P] [US2] Create [Entity] model in src/models/[entity].py
+- [ ] T026 [US2] Implement [Service] in src/services/[service].py
+- [ ] T027 [US2] Implement [endpoint/feature] in src/[location]/[file].py
+- [ ] T028 [US2] Integrate with User Story 1 components (if needed)
+- [ ] T029 [US2] Update completed checkboxes in tasks.md and run `git status`
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently
 
@@ -127,16 +133,17 @@ Examples of foundational tasks (adjust based on your project):
 
 **Independent Test**: [How to verify this story works on its own]
 
-### Tests for User Story 3 (OPTIONAL - only if tests requested) ⚠️
+### Tests for User Story 3 (REQUIRED - TDD) ⚠️
 
-- [ ] T024 [P] [US3] Contract test for [endpoint] in tests/contract/test_[name].py
-- [ ] T025 [P] [US3] Integration test for [user journey] in tests/integration/test_[name].py
+- [ ] T030 [P] [US3] Contract test for [endpoint] in tests/contract/test_[name].py
+- [ ] T031 [P] [US3] Integration test for [user journey] in tests/integration/test_[name].py
 
 ### Implementation for User Story 3
 
-- [ ] T026 [P] [US3] Create [Entity] model in src/models/[entity].py
-- [ ] T027 [US3] Implement [Service] in src/services/[service].py
-- [ ] T028 [US3] Implement [endpoint/feature] in src/[location]/[file].py
+- [ ] T032 [P] [US3] Create [Entity] model in src/models/[entity].py
+- [ ] T033 [US3] Implement [Service] in src/services/[service].py
+- [ ] T034 [US3] Implement [endpoint/feature] in src/[location]/[file].py
+- [ ] T035 [US3] Update completed checkboxes in tasks.md and run `git status`
 
 **Checkpoint**: All user stories should now be independently functional
 
@@ -150,12 +157,13 @@ Examples of foundational tasks (adjust based on your project):
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] TXXX [P] Documentation updates in docs/
+- [ ] TXXX [P] Update existing documentation only when explicitly requested
 - [ ] TXXX Code cleanup and refactoring
 - [ ] TXXX Performance optimization across all stories
 - [ ] TXXX [P] Additional unit tests (if requested) in tests/unit/
 - [ ] TXXX Security hardening
 - [ ] TXXX Run quickstart.md validation
+- [ ] TXXX Final verification that spec/plan/tasks files were not deleted or overwritten
 
 ---
 
@@ -178,11 +186,13 @@ Examples of foundational tasks (adjust based on your project):
 
 ### Within Each User Story
 
-- Tests (if included) MUST be written and FAIL before implementation
+- Tests MUST be written and FAIL before implementation
 - Models before services
 - Services before endpoints
 - Core implementation before integration
 - Story complete before moving to next priority
+- Update `tasks.md` checkboxes immediately after each completed task
+- Run `git status` at story start/end and before each checkpoint commit
 
 ### Parallel Opportunities
 
@@ -246,6 +256,8 @@ With multiple developers:
 - [Story] label maps task to specific user story for traceability
 - Each user story should be independently completable and testable
 - Verify tests fail before implementing
+- TDD is mandatory unless user explicitly approves an exception
 - Commit after each task or logical group
+- Keep markdown additions minimal; do not create standalone summary/change-log markdown unless requested
 - Stop at any checkpoint to validate story independently
 - Avoid: vague tasks, same file conflicts, cross-story dependencies that break independence
