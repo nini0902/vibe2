@@ -1,104 +1,104 @@
-# Implementation Plan: [FEATURE]
+# Implementation Plan: House-Building Game
 
-**Branch**: `[###-feature-name]` | **Date**: [DATE] | **Spec**: [link]
-**Input**: Feature specification from `/specs/[###-feature-name]/spec.md`
-
-**Note**: This template is filled in by the `/speckit.plan` command. See `.specify/templates/plan-template.md` for the execution workflow.
+**Branch**: `001-house-building-game` | **Date**: 2026-03-13 | **Spec**: [spec.md](spec.md)  
+**Input**: Feature specification from `/specs/001-house-building-game/spec.md`
 
 ## Summary
 
-[Extract from feature spec: primary requirement + technical approach from research]
+Build a browser-based, single-player, grid-based 2D house-building game. Players place and remove building components (walls, floors, roof, doors, windows) on a rectangular plot, save/load designs via localStorage, and enter a preview mode to view the finished house. The technical approach uses React + TypeScript for the UI, HTML5 Canvas for grid rendering, and a sparse Map-based grid state for O(1) placement and collision detection.
 
 ## Technical Context
 
-<!--
-  ACTION REQUIRED: Replace the content in this section with the technical details
-  for the project. The structure here is presented in advisory capacity to guide
-  the iteration process.
--->
-
-**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]  
-**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]  
-**Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]  
-**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]  
-**Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
-**Project Type**: [e.g., library/cli/web-service/mobile-app/compiler/desktop-app or NEEDS CLARIFICATION]  
-**Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]  
-**Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]  
-**Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
+**Language/Version**: TypeScript 5.x + React 18  
+**Primary Dependencies**: React, Vite, Vitest, React Testing Library, UUID  
+**Storage**: Browser localStorage (versioned JSON with checksums)  
+**Testing**: Vitest (unit + integration), React Testing Library (component), Playwright (E2E optional)  
+**Target Platform**: Web browser (modern evergreen browsers — Chrome, Firefox, Safari, Edge)  
+**Project Type**: Web application (frontend-only SPA, no backend)  
+**Performance Goals**: Smooth placement interactions (<16ms per frame on 50×50 grid); save/load in <3 s (SC-003)  
+**Constraints**: No mandatory login; localStorage only; 2D top-down view (no 3D); single player  
+**Scale/Scope**: Single SPA; grid up to 50×50 cells; up to 10 saved designs per browser
 
 ## Constitution Check
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+> The project constitution (`/memory/constitution.md`) contains placeholder template text and has not yet been filled in with project-specific principles. No gates can fail against placeholder content. This section will be revisited once the constitution is ratified.
+
+**Post-design re-check**: No constitution violations identified. The design uses a single frontend project (no unnecessary complexity), localStorage (simplest persistence for a browser game), and a clear separation between game logic (`game/`) and React UI (`components/`).
 
 ## Project Structure
 
 ### Documentation (this feature)
 
 ```text
-specs/[###-feature]/
-├── plan.md              # This file (/speckit.plan command output)
-├── research.md          # Phase 0 output (/speckit.plan command)
-├── data-model.md        # Phase 1 output (/speckit.plan command)
-├── quickstart.md        # Phase 1 output (/speckit.plan command)
-├── contracts/           # Phase 1 output (/speckit.plan command)
-└── tasks.md             # Phase 2 output (/speckit.tasks command - NOT created by /speckit.plan)
+specs/001-house-building-game/
+├── plan.md              # This file
+├── research.md          # Phase 0 output
+├── data-model.md        # Phase 1 output
+├── quickstart.md        # Phase 1 output
+├── contracts/           # Phase 1 output
+│   ├── game-state.contract.md
+│   └── storage.contract.md
+└── tasks.md             # Phase 2 output (created by /speckit.tasks)
 ```
 
 ### Source Code (repository root)
-<!--
-  ACTION REQUIRED: Replace the placeholder tree below with the concrete layout
-  for this feature. Delete unused options and expand the chosen structure with
-  real paths (e.g., apps/admin, packages/something). The delivered plan must
-  not include Option labels.
--->
 
 ```text
-# [REMOVE IF UNUSED] Option 1: Single project (DEFAULT)
 src/
-├── models/
-├── services/
-├── cli/
-└── lib/
+├── components/
+│   ├── Canvas/
+│   │   ├── GameCanvas.tsx          # Canvas host component
+│   │   └── GridRenderer.ts         # Pure canvas drawing logic
+│   ├── ComponentPanel/
+│   │   ├── ComponentPanel.tsx      # Building component selector
+│   │   └── ComponentButton.tsx
+│   ├── SaveLoadModal/
+│   │   ├── SaveLoadModal.tsx       # Save / Load UI
+│   │   ├── SaveForm.tsx
+│   │   └── LoadList.tsx
+│   ├── PreviewMode/
+│   │   └── PreviewMode.tsx         # Preview / rotate view
+│   └── App.tsx                     # Root component
+│
+├── game/                           # Framework-agnostic game logic
+│   ├── types.ts                    # All TypeScript interfaces & enums
+│   ├── GameState.ts                # Core state model
+│   ├── PlacementRules.ts           # Validation (pure functions)
+│   └── constants.ts                # GRID_WIDTH, GRID_HEIGHT, component list
+│
+├── storage/
+│   ├── StorageManager.ts           # Save/load interface
+│   └── LocalStorageAdapter.ts      # Browser localStorage implementation
+│
+├── hooks/
+│   ├── useGameState.ts             # Game state + dispatch
+│   ├── useCanvas.ts                # Canvas ref + redraw
+│   └── useSave.ts                  # Save/load actions
+│
+├── utils/
+│   ├── canvas.ts                   # Pixel ↔ grid coordinate conversion
+│   └── json.ts                     # JSON serialisation helpers
+│
+├── styles/                         # CSS modules
+└── main.tsx                        # Vite entry point
 
 tests/
-├── contract/
-├── integration/
-└── unit/
+├── unit/                           # Pure function tests (GameState, rules)
+├── integration/                    # Multi-module flow tests
+└── e2e/                            # Optional Playwright tests
 
-# [REMOVE IF UNUSED] Option 2: Web application (when "frontend" + "backend" detected)
-backend/
-├── src/
-│   ├── models/
-│   ├── services/
-│   └── api/
-└── tests/
+public/
+└── index.html
 
-frontend/
-├── src/
-│   ├── components/
-│   ├── pages/
-│   └── services/
-└── tests/
-
-# [REMOVE IF UNUSED] Option 3: Mobile + API (when "iOS/Android" detected)
-api/
-└── [same as backend above]
-
-ios/ or android/
-└── [platform-specific structure: feature modules, UI flows, platform tests]
+package.json
+tsconfig.json
+vite.config.ts
 ```
 
-**Structure Decision**: [Document the selected structure and reference the real
-directories captured above]
+**Structure Decision**: Pure frontend SPA (Option 2 simplified — no backend). Game logic lives in `game/` with zero React imports, enabling independent testing. React UI lives in `components/` and `hooks/`. `storage/` abstracts localStorage behind an interface for testability.
 
 ## Complexity Tracking
 
-> **Fill ONLY if Constitution Check has violations that must be justified**
-
-| Violation | Why Needed | Simpler Alternative Rejected Because |
-|-----------|------------|-------------------------------------|
-| [e.g., 4th project] | [current need] | [why 3 projects insufficient] |
-| [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient] |
+> No constitution violations require justification.
