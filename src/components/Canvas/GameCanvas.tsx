@@ -2,14 +2,22 @@
 import { useState, useCallback } from 'react'
 import { useGameState } from '@hooks/useGameState.tsx'
 import { useCanvas } from '@hooks/useCanvas.ts'
-import { canPlace, canRemove } from '@game/PlacementRules.ts'
+import { canRemove, getOccupant } from '@game/PlacementRules.ts'
 import { pixelToGrid } from './GridRenderer.ts'
 import { CELL_SIZE } from '@game/constants.ts'
 import type { GridPosition } from '@game/types.ts'
 import styles from './GameCanvas.module.css'
 
+/** Types that are placed by replacing an existing tile (not an empty cell). */
+const REPLACE_MAP: Record<string, string> = {
+  door:      'wall',
+  window:    'wall',
+  furniture: 'floor',
+  floor:     'ground',
+};
+
 export function GameCanvas() {
-  const { plot, selectedType, dispatch } = useGameState();
+  const { plot, selectedType, mode, dispatch } = useGameState();
   const [hoveredCell, setHoveredCell] = useState<GridPosition | null>(null);
   const { canvasRef } = useCanvas(hoveredCell);
 
@@ -26,14 +34,36 @@ export function GameCanvas() {
     const pos = getGridPos(e);
     if (!pos) return;
 
-    if (canRemove(plot, pos)) {
-      // Occupied cell — select it
-      dispatch({ type: 'SELECT_CELL', pos });
-    } else if (canPlace(plot, pos) && selectedType) {
-      // Empty cell with a component selected — place it
-      dispatch({ type: 'PLACE_COMPONENT', componentType: selectedType, pos });
+    // Erase mode: remove whatever is at the cell
+    if (mode === 'erase') {
+      if (canRemove(plot, pos)) {
+        dispatch({ type: 'REMOVE_COMPONENT', pos });
+      }
+      return;
     }
-  }, [plot, selectedType, dispatch, getGridPos]);
+
+    // Build mode
+    const occupant = getOccupant(plot, pos);
+
+    if (selectedType) {
+      const requiredUnderlying = REPLACE_MAP[selectedType];
+      if (requiredUnderlying && occupant?.type === requiredUnderlying) {
+        // Auto-replace: door/window on wall, furniture on floor, floor on ground
+        dispatch({ type: 'PLACE_COMPONENT', componentType: selectedType, pos });
+      } else if (!occupant) {
+        // Empty cell — attempt normal placement (building rules enforced in reducer)
+        dispatch({ type: 'PLACE_COMPONENT', componentType: selectedType, pos });
+      } else {
+        // Occupied cell with incompatible type — select it for inspection
+        dispatch({ type: 'SELECT_CELL', pos });
+      }
+    } else {
+      // No tool selected — select the occupied cell
+      if (occupant) {
+        dispatch({ type: 'SELECT_CELL', pos });
+      }
+    }
+  }, [plot, selectedType, mode, dispatch, getGridPos]);
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
     setHoveredCell(getGridPos(e));
@@ -42,6 +72,8 @@ export function GameCanvas() {
   const handleMouseLeave = useCallback(() => {
     setHoveredCell(null);
   }, []);
+
+  const cursor = mode === 'erase' ? 'not-allowed' : selectedType ? 'crosshair' : 'pointer';
 
   return (
     <canvas
@@ -52,7 +84,7 @@ export function GameCanvas() {
       onClick={handleClick}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      style={{ cursor: selectedType ? 'crosshair' : 'pointer' }}
+      style={{ cursor }}
     />
   );
 }

@@ -22,11 +22,11 @@ describe('hexCrc32', () => {
 describe('serializeComponents / deserializeComponents', () => {
   it('round-trips components', () => {
     const plot = createPlot(20, 20);
-    const { plot: p1 } = placeComponent(plot, 'wall', { x: 3, y: 4 });
+    const { plot: p1 } = placeComponent(plot, 'floor', { x: 3, y: 4 });
     const components = listComponents(p1);
     const serialized = serializeComponents(components);
     const deserialized = deserializeComponents(serialized);
-    expect(deserialized[0]?.type).toBe('wall');
+    expect(deserialized[0]?.type).toBe('floor');
     expect(deserialized[0]?.position).toEqual({ x: 3, y: 4 });
   });
 });

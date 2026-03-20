@@ -48,6 +48,57 @@
   border-color: #6c6;
 }
 
+.eraseModeBtn {
+  background: rgba(255, 120, 50, 0.4);
+  border-color: #f84;
+}
+
+.moneyBadge {
+  padding: 6px 14px;
+  background: rgba(255, 220, 50, 0.25);
+  border: 1px solid rgba(255, 220, 50, 0.6);
+  border-radius: 6px;
+  color: #ffe;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.completionBanner {
+  padding: 10px 20px;
+  background: linear-gradient(90deg, #1a6b1a, #2ea82e);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.75; }
+}
+
+.validationHints {
+  padding: 10px 12px;
+  background: #fffbe6;
+  border: 1px solid #f0c040;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.validationTitle {
+  margin: 0 0 6px;
+  font-weight: 700;
+  color: #7a5c00;
+}
+
+.validationList {
+  margin: 0;
+  padding-left: 18px;
+  color: #5a4000;
+  line-height: 1.6;
+}
+
 .statusBar {
   padding: 8px 20px;
   font-size: 14px;

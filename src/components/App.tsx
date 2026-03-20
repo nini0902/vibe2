@@ -1,5 +1,5 @@
 // T015 + T021 + T025 + T031 + T034 + T037: Root App component
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { GameStateProvider, useGameState } from '@hooks/useGameState.tsx'
 import { useSave } from '@hooks/useSave.ts'
 import { GameCanvas } from './Canvas/GameCanvas.tsx'
@@ -8,13 +8,17 @@ import { ActionPanel } from './ActionPanel/ActionPanel.tsx'
 import { SaveLoadModal } from './SaveLoadModal/SaveLoadModal.tsx'
 import { PreviewMode } from './PreviewMode/PreviewMode.tsx'
 import { listComponents } from '@game/GameState.ts'
+import { validateHouse } from '@game/HouseValidator.ts'
+import { COMPONENT_COSTS } from '@game/constants.ts'
 import styles from './App.module.css'
 
 function GameApp() {
-  const { plot, mode, lastActionResult, selectedCell, dispatch } = useGameState();
+  const { plot, mode, money, lastActionResult, selectedCell, selectedType, dispatch } = useGameState();
   const { designs, isSaving, isLoading, lastError, saveDesign, loadDesign, deleteDesign } = useSave();
   const [modalOpen, setModalOpen] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
+
+  const houseValidation = useMemo(() => validateHouse(plot), [plot]);
 
   const showToast = (msg: string) => {
     setToast(msg);
@@ -61,12 +65,17 @@ function GameApp() {
   const placementError = (() => {
     if (!lastActionResult) return null;
     if (!lastActionResult.success) {
-      if (lastActionResult.error === 'CELL_OCCUPIED') return '⛔ Cell is already occupied.';
-      if (lastActionResult.error === 'OUT_OF_BOUNDS') return '⛔ Position is out of bounds.';
-      if (lastActionResult.error === 'CELL_EMPTY')    return '⛔ No component at that position.';
+      if (lastActionResult.error === 'CELL_OCCUPIED')      return '⛔ Cell is already occupied.';
+      if (lastActionResult.error === 'OUT_OF_BOUNDS')      return '⛔ Position is out of bounds.';
+      if (lastActionResult.error === 'CELL_EMPTY')         return '⛔ No component at that position.';
+      if (lastActionResult.error === 'INVALID_RULE')       return '⛔ Placement not allowed here. Check building rules.';
+      if (lastActionResult.error === 'INSUFFICIENT_FUNDS') return `⛔ Not enough money! Need $${selectedType ? COMPONENT_COSTS[selectedType] : '?'}.`;
     }
     return null;
   })();
+
+  const isEraseMode = mode === 'erase';
+  const isBuildMode = mode === 'build' || isEraseMode;
 
   return (
     <div className={styles.app}>
@@ -74,6 +83,7 @@ function GameApp() {
       <header className={styles.header}>
         <h1 className={styles.logo}>🏠 House Builder</h1>
         <div className={styles.headerActions}>
+          <span className={styles.moneyBadge}>💰 ${money}</span>
           <button
             className={styles.headerBtn}
             onClick={() => dispatch({ type: 'CLEAR_PLOT' })}
@@ -87,6 +97,15 @@ function GameApp() {
           >
             💾 Save / Load
           </button>
+          {isBuildMode && (
+            <button
+              className={`${styles.headerBtn} ${isEraseMode ? styles.eraseModeBtn : ''}`}
+              onClick={() => dispatch({ type: 'SET_MODE', mode: isEraseMode ? 'build' : 'erase' })}
+              title={isEraseMode ? 'Switch to Build mode' : 'Switch to Erase mode'}
+            >
+              {isEraseMode ? '🔨 Build' : '🧹 Erase'}
+            </button>
+          )}
           <button
             className={`${styles.headerBtn} ${mode === 'preview' ? styles.activeBtn : ''}`}
             onClick={() => dispatch({ type: 'SET_MODE', mode: mode === 'preview' ? 'build' : 'preview' })}
@@ -95,6 +114,13 @@ function GameApp() {
           </button>
         </div>
       </header>
+
+      {/* House completion banner */}
+      {houseValidation.valid && (
+        <div className={styles.completionBanner}>
+          🎉 House Completed! Your house is valid and ready to live in!
+        </div>
+      )}
 
       {/* Status bar */}
       {(placementError || errorMsg || toast) && (
@@ -114,6 +140,16 @@ function GameApp() {
             </div>
             <aside className={styles.sidebar}>
               {selectedCell ? <ActionPanel /> : <ComponentPanel />}
+              {!houseValidation.valid && listComponents(plot).length > 0 && (
+                <div className={styles.validationHints}>
+                  <p className={styles.validationTitle}>🏗 Still needed:</p>
+                  <ul className={styles.validationList}>
+                    {houseValidation.missing.map(m => (
+                      <li key={m}>{m}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </aside>
           </>
         )}

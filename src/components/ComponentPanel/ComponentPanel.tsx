@@ -2,7 +2,7 @@
 import { useGameState } from '@hooks/useGameState.tsx'
 import { ComponentButton } from './ComponentButton.tsx'
 import type { ComponentType } from '@game/types.ts'
-import { COMPONENT_LIST } from '@game/constants.ts'
+import { COMPONENT_LIST, COMPONENT_COSTS } from '@game/constants.ts'
 import styles from './ComponentPanel.module.css'
 
 interface ComponentPanelProps {
@@ -10,7 +10,7 @@ interface ComponentPanelProps {
 }
 
 export function ComponentPanel({ onSelect }: ComponentPanelProps) {
-  const { selectedType, dispatch } = useGameState();
+  const { selectedType, money, dispatch } = useGameState();
 
   const handleSelect = (type: ComponentType) => {
     dispatch({ type: 'SELECT_COMPONENT', componentType: type });
@@ -25,6 +25,8 @@ export function ComponentPanel({ onSelect }: ComponentPanelProps) {
           key={ct}
           componentType={ct}
           selected={selectedType === ct}
+          cost={COMPONENT_COSTS[ct]}
+          affordable={money >= COMPONENT_COSTS[ct]}
           onClick={handleSelect}
         />
       ))}

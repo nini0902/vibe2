@@ -16,7 +16,7 @@ import {
 } from '@game/GameState.ts'
 import type { HouseDesign } from '@storage/IStorageAdapter.ts'
 import { deserializeComponents } from '@utils/json.ts'
-import { GRID_WIDTH, GRID_HEIGHT } from '@game/constants.ts'
+import { GRID_WIDTH, GRID_HEIGHT, COMPONENT_COSTS, INITIAL_MONEY } from '@game/constants.ts'
 
 // ---- Actions ----
 
@@ -26,7 +26,7 @@ export type GameStateAction =
   | { type: 'REPLACE_COMPONENT'; componentType: ComponentType; pos: GridPosition; orientation?: Orientation }
   | { type: 'LOAD_DESIGN';       design: HouseDesign }
   | { type: 'CLEAR_PLOT' }
-  | { type: 'SET_MODE';          mode: 'build' | 'preview' }
+  | { type: 'SET_MODE';          mode: 'build' | 'erase' | 'preview' }
   | { type: 'SELECT_COMPONENT';  componentType: ComponentType | null }
   | { type: 'SELECT_CELL';       pos: GridPosition | null };
 
@@ -36,7 +36,8 @@ export interface GameState {
   plot:             Plot;
   selectedType:     ComponentType | null;
   selectedCell:     GridPosition | null;
-  mode:             'build' | 'preview';
+  mode:             'build' | 'erase' | 'preview';
+  money:            number;
   lastActionResult: PlacementResult | RemovalResult | null;
 }
 
@@ -46,6 +47,7 @@ function initialState(): GameState {
     selectedType:     null,
     selectedCell:     null,
     mode:             'build',
+    money:            INITIAL_MONEY,
     lastActionResult: null,
   };
 }
@@ -55,26 +57,42 @@ function initialState(): GameState {
 function gameReducer(state: GameState, action: GameStateAction): GameState {
   switch (action.type) {
     case 'PLACE_COMPONENT': {
+      const cost = COMPONENT_COSTS[action.componentType];
+      if (state.money < cost) {
+        return {
+          ...state,
+          lastActionResult: { success: false, error: 'INSUFFICIENT_FUNDS' },
+        };
+      }
       const { plot, result } = placeComponent(
         state.plot,
         action.componentType,
         action.pos,
         action.orientation ?? Orientation.NORTH,
       );
-      return { ...state, plot, lastActionResult: result };
+      const money = result.success ? state.money - cost : state.money;
+      return { ...state, plot, money, lastActionResult: result };
     }
     case 'REMOVE_COMPONENT': {
       const { plot, result } = removeComponent(state.plot, action.pos);
       return { ...state, plot, lastActionResult: result, selectedCell: null };
     }
     case 'REPLACE_COMPONENT': {
+      const cost = COMPONENT_COSTS[action.componentType];
+      if (state.money < cost) {
+        return {
+          ...state,
+          lastActionResult: { success: false, error: 'INSUFFICIENT_FUNDS' },
+        };
+      }
       const { plot, result } = replaceComponent(
         state.plot,
         action.componentType,
         action.pos,
         action.orientation ?? Orientation.NORTH,
       );
-      return { ...state, plot, lastActionResult: result, selectedCell: null };
+      const money = result.success ? state.money - cost : state.money;
+      return { ...state, plot, money, lastActionResult: result, selectedCell: null };
     }
     case 'LOAD_DESIGN': {
       const { design } = action;
@@ -88,9 +106,15 @@ function gameReducer(state: GameState, action: GameStateAction): GameState {
       return { ...state, plot: newPlot, lastActionResult: null, selectedCell: null };
     }
     case 'CLEAR_PLOT':
-      return { ...state, plot: createPlot(state.plot.width, state.plot.height), lastActionResult: null, selectedCell: null };
+      return {
+        ...state,
+        plot:             createPlot(state.plot.width, state.plot.height),
+        money:            INITIAL_MONEY,
+        lastActionResult: null,
+        selectedCell:     null,
+      };
     case 'SET_MODE':
-      return { ...state, mode: action.mode };
+      return { ...state, mode: action.mode, selectedCell: null };
     case 'SELECT_COMPONENT':
       return { ...state, selectedType: action.componentType, selectedCell: null };
     case 'SELECT_CELL':

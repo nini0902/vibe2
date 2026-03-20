@@ -42,10 +42,14 @@
   font-weight: 700;
 }
 
-.icon {
-  font-size: 20px;
+.componentBtn.unaffordable {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
-.label {
-  color: #333;
+.cost {
+  margin-left: auto;
+  font-size: 11px;
+  color: #888;
+  font-weight: 600;
 }
