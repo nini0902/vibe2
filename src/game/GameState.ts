@@ -10,7 +10,7 @@ import type {
 } from './types.ts'
 import { Orientation } from './types.ts'
 import { MIN_GRID, MAX_GRID } from './constants.ts'
-import { canPlace, canRemove, getOccupant, toKey as rulesKey } from './PlacementRules.ts'
+import { canRemove, getOccupant, checkBuildingRule, toKey as rulesKey } from './PlacementRules.ts'
 
 /** Returns the spatial index key for a given position. */
 export function toKey(pos: GridPosition): string {
@@ -34,7 +34,9 @@ export function createPlot(width: number, height: number): Plot {
 }
 
 /**
- * Places a new building component at the specified position.
+ * Places a new building component at the specified position, enforcing building rules.
+ * For types that replace existing tiles (door → wall, window → wall, furniture → floor,
+ * floor → ground) the occupant is overwritten when the rule permits it.
  * Returns a new immutable plot snapshot on success.
  */
 export function placeComponent(
@@ -43,16 +45,20 @@ export function placeComponent(
   pos: GridPosition,
   orientation: Orientation = Orientation.NORTH,
 ): { plot: Plot; result: PlacementResult } {
-  if (!canPlace(plot, pos)) {
-    const isOccupied = getOccupant(plot, pos) !== null;
-    return {
-      plot,
-      result: {
-        success: false,
-        error: isOccupied ? 'CELL_OCCUPIED' : 'OUT_OF_BOUNDS',
-      },
-    };
+  // Bounds check first
+  if (pos.x < 0 || pos.x >= plot.width || pos.y < 0 || pos.y >= plot.height) {
+    return { plot, result: { success: false, error: 'OUT_OF_BOUNDS' } };
   }
+
+  // Building rule check (also handles occupied vs empty logic per type)
+  if (!checkBuildingRule(plot, type, pos)) {
+    const occupant = getOccupant(plot, pos);
+    if (occupant && type !== 'door' && type !== 'window' && type !== 'furniture' && type !== 'floor') {
+      return { plot, result: { success: false, error: 'CELL_OCCUPIED' } };
+    }
+    return { plot, result: { success: false, error: 'INVALID_RULE' } };
+  }
+
   const component: BuildingComponent = {
     id:          uuidv4(),
     type,

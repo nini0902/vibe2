@@ -17,12 +17,25 @@ export const DEFAULT_RENDER_OPTIONS: RenderOptions = {
   highlightColor:  'rgba(255, 255, 0, 0.3)',
   selectedColor:   'rgba(0, 120, 255, 0.4)',
   componentColors: {
-    wall:   '#8B6F5E',
-    floor:  '#D2B48C',
-    roof:   '#8B0000',
-    door:   '#4B3B2A',
-    window: '#87CEEB',
+    ground:    '#A8843A',
+    floor:     '#D2B48C',
+    wall:      '#8B6F5E',
+    roof:      '#8B0000',
+    door:      '#4B3B2A',
+    window:    '#87CEEB',
+    furniture: '#6B8E5E',
   },
+};
+
+/** Emoji icons for each component type rendered at tile centre. */
+const COMPONENT_EMOJI: Record<ComponentType, string> = {
+  ground:    '🟤',
+  floor:     '⬜',
+  wall:      '🧱',
+  roof:      '🔺',
+  door:      '🚪',
+  window:    '🪟',
+  furniture: '🪑',
 };
 
 /**
@@ -50,13 +63,13 @@ export function renderGrid(
     ctx.fillStyle = componentColors[component.type];
     ctx.fillRect(x * cellSize + 1, y * cellSize + 1, cellSize - 2, cellSize - 2);
 
-    // Component label
-    ctx.fillStyle = '#ffffff';
-    ctx.font = `bold ${Math.floor(cellSize * 0.35)}px monospace`;
+    // Emoji icon
+    const emoji = COMPONENT_EMOJI[component.type];
+    ctx.font = `${Math.floor(cellSize * 0.55)}px serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(
-      component.type[0]!.toUpperCase(),
+      emoji,
       x * cellSize + cellSize / 2,
       y * cellSize + cellSize / 2,
     );

@@ -1,11 +1,13 @@
 // T007: All TypeScript types and interfaces for the house-building game
 
 export const ComponentType = {
-  WALL:   'wall',
-  FLOOR:  'floor',
-  ROOF:   'roof',
-  DOOR:   'door',
-  WINDOW: 'window',
+  GROUND:    'ground',
+  FLOOR:     'floor',
+  WALL:      'wall',
+  DOOR:      'door',
+  WINDOW:    'window',
+  ROOF:      'roof',
+  FURNITURE: 'furniture',
 } as const;
 export type ComponentType = typeof ComponentType[keyof typeof ComponentType];
 
@@ -39,7 +41,7 @@ export interface Plot {
 
 export type PlacementResult =
   | { success: true;  component: BuildingComponent }
-  | { success: false; error: 'CELL_OCCUPIED' | 'OUT_OF_BOUNDS' | 'INVALID_TYPE' | 'CELL_EMPTY' };
+  | { success: false; error: 'CELL_OCCUPIED' | 'OUT_OF_BOUNDS' | 'INVALID_TYPE' | 'CELL_EMPTY' | 'INVALID_RULE' | 'INSUFFICIENT_FUNDS' };
 
 export type RemovalResult =
   | { success: true }
